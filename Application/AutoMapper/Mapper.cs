@@ -3,6 +3,8 @@ using Application.Functions.CarModels.Commands.Add;
 using Application.Functions.CarModels.Queries.GetAll;
 using Application.Functions.Cars.Commands.Add;
 using Application.Functions.Cars.Queries.GetAll;
+using Application.Functions.Rents.Commands.RentCar;
+using Application.Functions.Rents.Queries.GetRentsByUser;
 using AutoMapper;
 using Domain.Entites;
 using System;
@@ -34,6 +36,17 @@ namespace Application.AutoMapper
 
             //User Commands
             CreateMap<UserApp, RegisterCommand>().ReverseMap();
+
+            //Rent Queries
+            CreateMap<GetRentsByUserDto, Rent>()
+                .ForPath(dest => dest.Car.CarsModel.BrandName, opt => opt.MapFrom(src => src.BrandName))
+                .ForPath(dest => dest.Car.CarsModel.ModelName, opt => opt.MapFrom(src => src.ModelName))
+                .ReverseMap();
+
+            //Rent Commands
+            CreateMap<Rent, RentCarCommand>().ReverseMap();
+
+
         }
     }
 }

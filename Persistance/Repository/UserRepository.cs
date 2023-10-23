@@ -20,6 +20,11 @@ namespace Persistance.Repository
         {
             return await _context.Users.FirstOrDefaultAsync(x => x.Email == email);
         }
+
+        public async Task<UserApp> GetUserByUsernameAsync(string userName)
+        {
+            return await _context.Users.FirstOrDefaultAsync(x => x.UserName == userName);
+        }
     }
 
 }

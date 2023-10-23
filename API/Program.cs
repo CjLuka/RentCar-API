@@ -18,6 +18,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddPersistance(builder.Configuration);
 builder.Services.AddApplication(builder.Configuration);
+builder.Services.AddHttpContextAccessor();
 
 builder.Services.AddSwaggerGen(x =>
 {

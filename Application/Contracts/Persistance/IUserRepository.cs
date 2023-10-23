@@ -10,5 +10,6 @@ namespace Application.Contracts.Persistance
     public interface IUserRepository : IAsyncRepository<UserApp>
     {
         Task<UserApp> GetByEmailAsync(string email);
+        Task<UserApp> GetUserByUsernameAsync(string userName);
     }
 }

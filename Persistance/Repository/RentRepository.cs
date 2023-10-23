@@ -20,7 +20,8 @@ namespace Persistance.Repository
         public async Task<List<Rent>> GetByUserIdAsync(Guid userId)
         {
             return await _context.Rents
-                .Include(x => x.Car)
+                //.Include(x => x.Car)
+                .Include(x => x.Car.CarsModel)
                 .Where(x => x.UserAppId == userId)
                 .ToListAsync();     
         }
