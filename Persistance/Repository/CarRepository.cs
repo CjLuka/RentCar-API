@@ -23,5 +23,16 @@ namespace Persistance.Repository
                 .Include(x => x.CarsModel)
                 .ToListAsync();
         }
+
+        //Pobranie dostępnych samochodów
+        public async Task<List<Car>> GetAvaliableCars(DateTime startDate, DateTime endDate)
+        {
+            return await _context.Cars
+                .Include(x => x.CarsModel)
+                //.Where(car => _context.Rents.Any(rental => rental.Status == "Ready"))
+                .Where(car => !_context.Rents.Any(rental => rental.CarId == car.Id &&
+                    (startDate <= rental.DateTo && endDate >= rental.DateFrom)))
+                .ToListAsync();
+        }
     }
 }

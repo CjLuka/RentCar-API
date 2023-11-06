@@ -10,5 +10,6 @@ namespace Application.Contracts.Persistance
     public interface IRentRepository : IAsyncRepository<Rent>
     {
         Task<List<Rent>> GetByUserIdAsync(Guid userId);
+        //Task<List<Rent>> 
     }
 }

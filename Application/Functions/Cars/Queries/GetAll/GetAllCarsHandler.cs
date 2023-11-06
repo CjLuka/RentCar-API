@@ -15,16 +15,30 @@ namespace Application.Functions.Cars.Queries.GetAll
     public class GetAllCarsHandler : IRequestHandler<GetAllCarsQuery, BaseResponse<List<GetAllCarsDto>>>
     {
         private readonly ICarRepository _carRepository;
+        //private readonly ICarModelRepository _carModelRepository;
         private readonly IMapper _mapper;
-        public GetAllCarsHandler(ICarRepository carRepository, IMapper mapper)
+        public GetAllCarsHandler(ICarRepository carRepository/*, ICarModelRepository carModelRepository*/, IMapper mapper)
         {
             _carRepository = carRepository;
+            //_carModelRepository = carModelRepository;
             _mapper = mapper;
         }
 
         public async Task<BaseResponse<List<GetAllCarsDto>>> Handle(GetAllCarsQuery request, CancellationToken cancellationToken)
         {
             var allCars = await _carRepository.GetAllAsync();
+            //foreach (var car in allCars)
+            //{
+            //    var carModelId = await _carModelRepository.GetByIdAsync(car.CarModelId);
+            //    if(carModelId!= null)
+            //    {
+            //        car.CarsModel = new CarModel
+            //        {
+            //            BrandName = car.CarsModel.BrandName,
+            //            ModelName = car.CarsModel.ModelName    
+            //        };
+            //    }
+            //}
             if (allCars.Count == 0 || allCars == null)
             {
                 return new BaseResponse<List<GetAllCarsDto>>(false, "brak samochodów");

@@ -8,6 +8,7 @@ namespace Application.Functions.CarModels.Queries.GetAll
 {
     public class GetAllCarModelsDto
     {
+        public int Id { get; set; }
         public string BrandName { get; set; }
         public string ModelName { get; set; }
     }

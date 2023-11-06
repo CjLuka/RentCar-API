@@ -1,5 +1,7 @@
-﻿using Application.Functions.Cars.Commands.Add;
+﻿using Application.Functions.CarModels.Queries.GetAll;
+using Application.Functions.Cars.Commands.Add;
 using Application.Functions.Cars.Queries.GetAll;
+using Application.Functions.Cars.Queries.GetAvaliable;
 using Application.Response;
 using MediatR;
 using Microsoft.AspNetCore.Authorization;
@@ -18,20 +20,35 @@ namespace API.Controllers
             _mediator = mediator;
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet]
         [Route("AllCars")]
-        public async Task<BaseResponse<List<GetAllCarsDto>>> GetAllCars()
+        public async Task</*BaseResponse*/ActionResult<List<GetAllCarsDto>>> GetAllCars()
         {
-            return await _mediator.Send(new GetAllCarsQuery());
+            var cars = await _mediator.Send(new GetAllCarsQuery());
+            return Ok(cars.Data);
+            
+            //return await _mediator.Send(new GetAllCarsQuery());
         }
 
-        [Authorize(Roles = "Admin")]
+        [HttpGet]
+        [Route("AvailableCars")]
+        public async Task</*BaseResponse*/ActionResult<List<GetAvaliableDto>>> GetAvaliableCars(DateTime startDate2, DateTime endDate2)
+        {
+            var avaliableCars = await _mediator.Send(new GetAvaliableQuery() { endDate = endDate2, startDate = startDate2});
+            return Ok(avaliableCars.Data);
+        }
+
+        //[Authorize(Roles = "Admin")]
         [HttpPost]
         [Route("Add")]
-        public async Task <BaseResponse> AddCar([FromBody] AddCarCommand request)
+        public async Task <IActionResult>/*<BaseResponse>*/ AddCar([FromBody] AddCarCommand request)
         {
-            return await _mediator.Send(request);
+            //return await _mediator.Send(request);
+            var car = await _mediator.Send(request);
+            return Ok(car);
         }
     }
 }
+//var carModels = await _mediator.Send(new GetAllCarModelsQuery());
+//return Ok(carModels.Data);

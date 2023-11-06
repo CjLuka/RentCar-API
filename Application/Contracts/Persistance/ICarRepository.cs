@@ -10,5 +10,6 @@ namespace Application.Contracts.Persistance
     public interface ICarRepository : IAsyncRepository<Car>
     {
         //Task<List<Car>> GetAll();
+        Task<List<Car>> GetAvaliableCars(DateTime startDate, DateTime endDate);
     }
 }

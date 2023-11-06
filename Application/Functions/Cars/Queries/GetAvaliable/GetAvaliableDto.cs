@@ -5,12 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Application.Functions.Cars.Queries.GetAll
+namespace Application.Functions.Cars.Queries.GetAvaliable
 {
-    public class GetAllCarsDto
+    public class GetAvaliableDto
     {
         public int Year { get; set; }
-        public int CarModelId { get; set; }
-        public CarModel CarModel{ get; set; }
+        public CarModel CarModel { get; set; }
     }
 }

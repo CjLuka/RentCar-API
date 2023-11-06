@@ -19,14 +19,24 @@ namespace API.Controllers
             _mediator = mediator;
         }
 
+        //[HttpGet]
+        //[Route("AllCarModels")]
+        //public async Task<BaseResponse<List<GetAllCarModelsDto>>> GetAllCarModels()
+        //{
+        //    return await _mediator.Send(new GetAllCarModelsQuery());
+        //}
+
         [HttpGet]
         [Route("AllCarModels")]
-        public async Task<BaseResponse<List<GetAllCarModelsDto>>> GetAllCarModels()
+        public async Task<ActionResult<List<GetAllCarModelsDto>>> GetAllCarModels()
         {
-            return await _mediator.Send(new GetAllCarModelsQuery());
+            var carModels = await _mediator.Send(new GetAllCarModelsQuery());
+            return Ok(carModels.Data);
         }
 
-        [Authorize(Roles ="Admin")]
+        //}
+
+        //[Authorize(Roles ="Admin")]
         [HttpPost]
         [Route("AddCarModel")]
         public async Task <BaseResponse> AddCarModel([FromBody] AddCarModelCommand request)

@@ -3,6 +3,7 @@ using Application.Functions.CarModels.Commands.Add;
 using Application.Functions.CarModels.Queries.GetAll;
 using Application.Functions.Cars.Commands.Add;
 using Application.Functions.Cars.Queries.GetAll;
+using Application.Functions.Cars.Queries.GetAvaliable;
 using Application.Functions.Rents.Commands.RentCar;
 using Application.Functions.Rents.Queries.GetRentsByUser;
 using AutoMapper;
@@ -21,10 +22,16 @@ namespace Application.AutoMapper
         {
             //Car Queries
             CreateMap<Car, GetAllCarsDto>()
-                .ForMember(dest => dest.BrandName, opt => opt.MapFrom(src => src.CarsModel.BrandName))
-                .ForMember(dest => dest.ModelName, opt => opt.MapFrom(src => src.CarsModel.ModelName))
+                //.ForMember(dest => dest.BrandName, opt => opt.MapFrom(src => src.CarsModel.BrandName))
+                //.ForMember(dest => dest.ModelName, opt => opt.MapFrom(src => src.CarsModel.ModelName))
+                .ForPath(dest => dest.CarModel.BrandName, opt => opt.MapFrom(src => src.CarsModel.BrandName))
+                .ForPath(dest => dest.CarModel.ModelName, opt => opt.MapFrom(src => src.CarsModel.ModelName))
                 .ReverseMap();
 
+            CreateMap<Car, GetAvaliableDto>()
+                .ForPath(dest => dest.CarModel.BrandName, opt => opt.MapFrom(src => src.CarsModel.BrandName))
+                .ForPath(dest => dest.CarModel.ModelName, opt => opt.MapFrom(src => src.CarsModel.ModelName))
+                .ReverseMap();
             //Car Commands
             CreateMap<Car, AddCarCommand>().ReverseMap();
 
