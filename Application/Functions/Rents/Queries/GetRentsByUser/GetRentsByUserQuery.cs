@@ -10,6 +10,6 @@ namespace Application.Functions.Rents.Queries.GetRentsByUser
 {
     public class GetRentsByUserQuery : IRequest<BaseResponse<List<GetRentsByUserDto>>>
     {
-
+        public string UserId { get; set; }
     }
 }

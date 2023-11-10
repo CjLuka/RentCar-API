@@ -9,6 +9,7 @@ namespace Application.Functions.Cars.Queries.GetAvaliable
 {
     public class GetAvaliableDto
     {
+        public int Id { get; set; }
         public int Year { get; set; }
         public CarModel CarModel { get; set; }
     }

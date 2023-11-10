@@ -20,7 +20,7 @@ namespace API.Controllers
             _mediator = mediator;
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpGet]
         [Route("AllCars")]
         public async Task</*BaseResponse*/ActionResult<List<GetAllCarsDto>>> GetAllCars()
@@ -31,6 +31,7 @@ namespace API.Controllers
             //return await _mediator.Send(new GetAllCarsQuery());
         }
 
+        
         [HttpGet]
         [Route("AvailableCars")]
         public async Task</*BaseResponse*/ActionResult<List<GetAvaliableDto>>> GetAvaliableCars(DateTime startDate2, DateTime endDate2)
@@ -40,6 +41,7 @@ namespace API.Controllers
         }
 
         //[Authorize(Roles = "Admin")]
+        [Authorize]
         [HttpPost]
         [Route("Add")]
         public async Task <IActionResult>/*<BaseResponse>*/ AddCar([FromBody] AddCarCommand request)
@@ -50,5 +52,3 @@ namespace API.Controllers
         }
     }
 }
-//var carModels = await _mediator.Send(new GetAllCarModelsQuery());
-//return Ok(carModels.Data);

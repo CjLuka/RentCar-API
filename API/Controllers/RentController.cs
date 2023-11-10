@@ -1,4 +1,5 @@
-﻿using Application.Functions.Cars.Commands.Add;
+﻿using Application.Functions.CarModels.Queries.GetAll;
+using Application.Functions.Cars.Commands.Add;
 using Application.Functions.Rents.Commands.RentCar;
 using Application.Functions.Rents.Queries.GetRentsByUser;
 using Application.Response;
@@ -23,11 +24,13 @@ namespace API.Controllers
         [Authorize]
         [HttpGet]
         [Route("GetMyRents")]
-        public async Task <BaseResponse<List<GetRentsByUserDto>>> GetRentsByUserDto()
+        public async Task </*BaseResponse*/ActionResult<List<GetRentsByUserDto>>> GetRentsByUserDto()
         {
-            return await _mediator.Send(new GetRentsByUserQuery());
+            var myRents = await _mediator.Send(new GetRentsByUserQuery());
+            return Ok(myRents.Data);
+            //return await _mediator.Send(new GetRentsByUserQuery());
         }
-        [Authorize]
+        
         [HttpPost]
         [Route("RentCar")]
         public async Task <BaseResponse> RentCar([FromBody] RentCarCommand request)

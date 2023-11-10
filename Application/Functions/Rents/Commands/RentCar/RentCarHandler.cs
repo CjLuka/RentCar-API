@@ -35,12 +35,28 @@ namespace Application.Functions.Rents.Commands.RentCar
             var userName = _userServices.getUserName();
             var user = await _userRepository.GetUserByUsernameAsync(userName);
 
-            var newRent = _mapper.Map<Rent>(request);
-            newRent.UserAppId = user.Id;
-            newRent.DateFrom = DateTime.Now;
-            newRent.DateTo = newRent.DateFrom.AddDays(1);
+            //var userIdFromBase = "19E3D4BF-37F2-4ED6-8AE3-8C6EAE9920BE";
 
-            var modelCar = await _carModelRepository.GetByIdAsync(request.CarId);
+            var newRent = _mapper.Map<Rent>(request);
+            newRent.Status = "InRealization";
+            //newRent.UserAppId = Guid.TryParse(userIdFromBase);
+
+
+            //SPRAWDZONE I DZIAŁA TO PONIŻEJ
+            //string userIdFromBase = "19E3D4BF-37F2-4ED6-8AE3-8C6EAE9920BE"; // Tutaj zastąp "wartość_z_bazy_danych" rzeczywistą wartością string.
+            //Guid newRentUserAppId;
+
+            //if (Guid.TryParse(userIdFromBase, out newRentUserAppId))
+            //{
+            //    // Konwersja zakończona sukcesem, newRentUserAppId zawiera teraz wartość Guid.
+            //    newRent.UserAppId = newRentUserAppId;
+            //}
+
+
+            //newRent.DateFrom = DateTime.Now;
+            //newRent.DateTo = newRent.DateFrom.AddDays(1);
+
+            var modelCar = await _carRepository.GetByIdAsync(request.CarId);
 
             if(modelCar == null)
             {

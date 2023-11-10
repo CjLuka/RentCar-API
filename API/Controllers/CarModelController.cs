@@ -25,7 +25,6 @@ namespace API.Controllers
         //{
         //    return await _mediator.Send(new GetAllCarModelsQuery());
         //}
-
         [HttpGet]
         [Route("AllCarModels")]
         public async Task<ActionResult<List<GetAllCarModelsDto>>> GetAllCarModels()
@@ -36,7 +35,7 @@ namespace API.Controllers
 
         //}
 
-        //[Authorize(Roles ="Admin")]
+        [Authorize(Roles ="Admin")]
         [HttpPost]
         [Route("AddCarModel")]
         public async Task <BaseResponse> AddCarModel([FromBody] AddCarModelCommand request)

@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace Application.Functions.Auth.Commands.Login
 {
-    public class LoginHandler : IRequestHandler<LoginCommand, BaseResponse<string?>>
+    public class LoginHandler : IRequestHandler<LoginCommand, LoginDto>
     {
         private readonly IConfiguration _configuration;
         private readonly IUserRepository _userRepository;
@@ -27,8 +27,7 @@ namespace Application.Functions.Auth.Commands.Login
             _userManager = userManager;
             _userRepository = userRepository;
         }
-
-        public async Task<BaseResponse<string?>> Handle(LoginCommand request, CancellationToken cancellationToken)
+        public async Task<LoginDto> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
             var user = await _userRepository.GetByEmailAsync(request.Email);
 
@@ -49,12 +48,49 @@ namespace Application.Functions.Auth.Commands.Login
 
                 var token = GetToken(authClaims);
 
-                return new BaseResponse<string?>(
-                    new JwtSecurityTokenHandler().WriteToken(token).ToString(), true);
+                var logingDto = new LoginDto()
+                {
+                    Email = request.Email,
+                    UserName = user.UserName,
+                    Token = new JwtSecurityTokenHandler().WriteToken(token).ToString(),
+                    Roles = userRoles.ToList(),
+                    Id = user.Id.ToString()
+                };
 
+                return logingDto;
             }
-            return new BaseResponse<string?>(false, "Incorrect email or password");
+            return null;
+            
         }
+        //ZMIENIONA FUNKCJA ABY ZWRACAC USERNAME I EMAIL, A NIE TYLKO SAM TOKEN^^
+
+        //public async Task<BaseResponse<string?>> Handle(LoginCommand request, CancellationToken cancellationToken)
+        //{
+        //    var user = await _userRepository.GetByEmailAsync(request.Email);
+
+        //    if (user != null && await _userManager.CheckPasswordAsync(user, request.Password))
+        //    {
+        //        var userRoles = await _userManager.GetRolesAsync(user);
+
+        //        var authClaims = new List<Claim>
+        //        {
+        //            new Claim(ClaimTypes.Name, user?.UserName ?? ""),
+        //            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
+        //        };
+
+        //        foreach (var userRole in userRoles)
+        //        {
+        //            authClaims.Add(new Claim(ClaimTypes.Role, userRole));
+        //        }
+
+        //        var token = GetToken(authClaims);
+
+        //        return new BaseResponse<string?>(
+        //            new JwtSecurityTokenHandler().WriteToken(token).ToString(), true);
+
+        //    }
+        //    return new BaseResponse<string?>(false, "Incorrect email or password");
+        //}
         private JwtSecurityToken GetToken(List<Claim> claims)
         {
             var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"] ?? ""));

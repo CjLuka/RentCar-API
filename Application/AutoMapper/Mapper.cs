@@ -46,8 +46,8 @@ namespace Application.AutoMapper
 
             //Rent Queries
             CreateMap<GetRentsByUserDto, Rent>()
-                .ForPath(dest => dest.Car.CarsModel.BrandName, opt => opt.MapFrom(src => src.BrandName))
-                .ForPath(dest => dest.Car.CarsModel.ModelName, opt => opt.MapFrom(src => src.ModelName))
+                .ForPath(dest => dest.Car.CarsModel.BrandName, opt => opt.MapFrom(src => src.CarModel.BrandName))
+                .ForPath(dest => dest.Car.CarsModel.ModelName, opt => opt.MapFrom(src => src.CarModel.ModelName))
                 .ReverseMap();
 
             //Rent Commands
