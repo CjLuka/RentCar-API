@@ -12,5 +12,11 @@ namespace Application.Functions.CarModels.Commands.Add
     {
         public string BrandName { get; set; }
         public string ModelName { get; set; }
+
+        public AddCarModelCommand(string brandName, string modelName)
+        {
+            BrandName = brandName;
+            ModelName = modelName;
+        }
     }
 }
