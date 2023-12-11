@@ -1,0 +1,32 @@
+version: '3.4'
+
+networks:
+  rentcar-network:
+
+services:
+  db:
+    container_name: rentCar-DataBase
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    ports:
+    - 1433:1433
+    environment:
+    - ACCEPT_EULA=Y
+    - MSSQL_SA_PASSWORD=Haslo123!
+    networks:
+    - rentcar-network
+
+
+  api:
+    container_name: rentCar-Api
+    image: ${DOCKER_REGISTRY-}api
+    build:
+      context: .
+      dockerfile: API/Dockerfile
+    ports:
+    - 8001:80
+    depends_on:
+    - db
+    environment:
+    - RENTCAR_CS=Server=db;Database=RentCar;User Id=sa;Password=Haslo123!;TrustServerCertificate=True;MultipleActiveResultSets=true;
+    networks:
+    - rentcar-network

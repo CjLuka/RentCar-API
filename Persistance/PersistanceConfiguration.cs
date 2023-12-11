@@ -14,10 +14,10 @@ namespace Persistance
 {
     public static class PersistanceConfiguration
     {
-        public static IServiceCollection AddPersistance(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddPersistance(this IServiceCollection services, IConfiguration configuration, string connectionString)
         {
             services.AddDbContext<RentCarDbContext>(options =>
-                options.UseSqlServer(configuration.GetConnectionString("DeafultConnection")));
+                options.UseSqlServer(connectionString ?? configuration.GetConnectionString("DeafultConnection")));
 
             services.AddScoped<ICarRepository, CarRepository>();
             services.AddScoped<IUserRepository, UserRepository>();

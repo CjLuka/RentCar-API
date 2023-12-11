@@ -2,10 +2,13 @@ using Application;
 using Domain.Entites;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Persistance;
 using Persistance.Data;
+using System;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,7 +19,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddPersistance(builder.Configuration);
+builder.Services.AddPersistance(builder.Configuration, Environment.GetEnvironmentVariable("RENTCAR_CS"));
 builder.Services.AddApplication(builder.Configuration);
 builder.Services.AddHttpContextAccessor();
 
@@ -62,7 +65,8 @@ builder.Services.AddIdentityCore<UserApp>()
     .AddEntityFrameworkStores<RentCarDbContext>()
     .AddDefaultTokenProviders();
 
-builder.Services.Configure<IdentityOptions>(options => {
+builder.Services.Configure<IdentityOptions>(options =>
+{
     options.Password.RequireDigit = false;
     options.Password.RequireLowercase = false;
     options.Password.RequireUppercase = false;
@@ -72,7 +76,8 @@ builder.Services.Configure<IdentityOptions>(options => {
 });
 
 
-builder.Services.Configure<IdentityOptions>(options => {
+builder.Services.Configure<IdentityOptions>(options =>
+{
     options.Password.RequireDigit = false;
     options.Password.RequireLowercase = false;
     options.Password.RequireUppercase = false;
@@ -120,7 +125,14 @@ app.UseCors(options =>
 
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
+
+using (var scope = app.Services.CreateScope())
+{
+    var dbContext = scope.ServiceProvider
+        .GetRequiredService<RentCarDbContext>();
+
+    dbContext.Database.Migrate();
+}
 
 app.Run();
