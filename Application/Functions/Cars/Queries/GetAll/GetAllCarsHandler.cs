@@ -27,18 +27,7 @@ namespace Application.Functions.Cars.Queries.GetAll
         public async Task<BaseResponse<List<GetAllCarsDto>>> Handle(GetAllCarsQuery request, CancellationToken cancellationToken)
         {
             var allCars = await _carRepository.GetAllAsync();
-            //foreach (var car in allCars)
-            //{
-            //    var carModelId = await _carModelRepository.GetByIdAsync(car.CarModelId);
-            //    if(carModelId!= null)
-            //    {
-            //        car.CarsModel = new CarModel
-            //        {
-            //            BrandName = car.CarsModel.BrandName,
-            //            ModelName = car.CarsModel.ModelName    
-            //        };
-            //    }
-            //}
+
             if (allCars.Count == 0 || allCars == null)
             {
                 return new BaseResponse<List<GetAllCarsDto>>(false, "brak samochodów");

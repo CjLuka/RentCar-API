@@ -24,6 +24,12 @@ namespace Application.Functions.CarModels.Commands.Add
 
         public async Task<BaseResponse> Handle(AddCarModelCommand request, CancellationToken cancellationToken)
         {
+            var validator = new AddCarModelValidator();
+            var validationResult = await validator.ValidateAsync(request);
+            if (!validationResult.IsValid)
+            {
+                return new BaseResponse(false, "Błąd podczas walidacji");
+            }
             var carModel = _mapper.Map<CarModel>(request);
 
             var addCarModel = await _carModelRepository.AddAsync(carModel);

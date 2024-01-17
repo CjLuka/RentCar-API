@@ -25,6 +25,14 @@ namespace Application.Functions.Cars.Commands.Add
 
         public async Task<BaseResponse> Handle(AddCarCommand request, CancellationToken cancellationToken)
         {
+            var validator = new AddCarValidator();
+            var validationResult = await validator.ValidateAsync(request);
+            
+            if (!validationResult.IsValid)
+            {
+                return new BaseResponse(false, "Błąd podczas walidacji danych");
+            }
+
             var car = _mapper.Map<Car>(request);
             car.Image = "test";
 

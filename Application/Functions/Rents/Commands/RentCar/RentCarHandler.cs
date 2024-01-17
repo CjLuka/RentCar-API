@@ -32,6 +32,14 @@ namespace Application.Functions.Rents.Commands.RentCar
 
         public async Task<BaseResponse> Handle(RentCarCommand request, CancellationToken cancellationToken)
         {
+            var validator = new RentCarValidator();
+            var validationResult = await validator.ValidateAsync(request);
+
+            if (!validationResult.IsValid)
+            {
+                return new BaseResponse(false, "Błąd podczas walidacji danych");
+            }
+
             var userName = _userServices.getUserName();
             var user = await _userRepository.GetUserByUsernameAsync(userName);
 

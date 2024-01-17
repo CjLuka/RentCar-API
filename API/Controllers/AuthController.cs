@@ -25,12 +25,6 @@ namespace API.Controllers
         }
 
 
-        //[HttpPost]
-        //[Route("Login")]
-        //public async Task<BaseResponse<string?>> Login([FromBody] LoginCommand request)
-        //{
-        //    return await _mediator.Send(request);
-        //}
         [HttpPost]
         [Route("Login")]
         public async Task<LoginDto> Login([FromBody] LoginCommand request)

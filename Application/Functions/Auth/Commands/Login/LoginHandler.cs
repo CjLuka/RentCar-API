@@ -29,6 +29,20 @@ namespace Application.Functions.Auth.Commands.Login
         }
         public async Task<LoginDto> Handle(LoginCommand request, CancellationToken cancellationToken)
         {
+            var validator = new LoginValidator();
+            var validationResult = await validator.ValidateAsync(request);
+
+            if (!validationResult.IsValid)
+            {
+                return new LoginDto{
+                    Email = null,
+                    UserName = null,
+                    Token = null,
+                    Roles = null,
+                    Id = null
+                };
+            }
+
             var user = await _userRepository.GetByEmailAsync(request.Email);
 
             if (user != null && await _userManager.CheckPasswordAsync(user, request.Password))

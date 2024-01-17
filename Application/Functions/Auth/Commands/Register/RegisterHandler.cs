@@ -27,6 +27,15 @@ namespace Application.Functions.Auth.Commands.Register
 
         public async Task<BaseResponse> Handle(RegisterCommand request, CancellationToken cancellationToken)
         {
+
+            var validator = new RegisterValidator();
+            var validationResult = await validator.ValidateAsync(request);
+
+            if(!validationResult.IsValid)
+            {
+                return new BaseResponse(false, "Błąd podczas walidacji danych");
+            }
+
             var userExist = await _userRepository.GetByEmailAsync(request.Email);
             if (userExist != null)
             {
